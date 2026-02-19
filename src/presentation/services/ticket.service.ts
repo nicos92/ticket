@@ -15,6 +15,10 @@ export class TicketService {
     { id: UuidAdapter.v4(), number: 10, createdAt: new Date(), done: false },
   ];
 
+  public get getTickets(): Ticket[] {
+    return [...this.tickets].sort((a, b) => b.number - a.number);
+  }
+
   private readonly workingOnTickets: Ticket[] = [];
 
   public get pendingTickets(): Ticket[] {

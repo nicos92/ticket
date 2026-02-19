@@ -5,7 +5,7 @@ export class TicketController {
   constructor(private readonly ticketService = new TicketService()) {}
 
   getTickets = (_req: Request, res: Response): void => {
-    res.json(this.ticketService.tickets);
+    res.json(this.ticketService.getTickets);
   };
 
   getLastTicket = (_req: Request, res: Response): void => {
@@ -17,7 +17,7 @@ export class TicketController {
   };
 
   createTickets = (_req: Request, res: Response): void => {
-    res.status(201).json(this.ticketService.createTicker);
+    res.status(201).json(this.ticketService.createTicker());
   };
 
   getWorkingOnTicket = (_req: Request, res: Response): void => {
