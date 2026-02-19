@@ -12,10 +12,12 @@ function main() {
   const PORT = envs.PORT;
   const server = new Server({
     port: PORT,
-    routes: AppRoutes.routes,
+    // routes: AppRoutes.routes,
   });
   const httpServer = createServer(server.app);
   WssService.initWebSocketServer({ server: httpServer });
+
+  server.setRoutes(AppRoutes.routes);
 
   httpServer.listen(PORT, () => {
     console.log(`👂 HTTP Server listening on port ${PORT}`);
