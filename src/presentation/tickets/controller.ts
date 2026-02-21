@@ -17,11 +17,11 @@ export class TicketController {
   };
 
   createTickets = (_req: Request, res: Response): void => {
-    res.status(201).json(this.ticketService.createTicker());
+    res.status(201).json(this.ticketService.createTicket());
   };
 
   getWorkingOnTicket = (_req: Request, res: Response): void => {
-    res.json(this.ticketService.lastWorkingOnTockets);
+    res.json(this.ticketService.lastWorkingOnTickets);
   };
 
   getDrawTicket = (req: Request, res: Response): void => {

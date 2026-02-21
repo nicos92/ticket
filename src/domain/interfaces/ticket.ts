@@ -4,7 +4,7 @@ export interface Ticket {
   id: string;
   number: number;
   createdAt: Date;
-  handleAtDekt?: string;
+  handleAtDesk?: string;
   handleAt?: Date;
   done: boolean;
 }

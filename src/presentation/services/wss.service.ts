@@ -24,6 +24,13 @@ export class WssService {
   static initWebSocketServer(options: Options) {
     WssService._instance = new WssService(options);
   }
+  public sendMessage(type: string, payload: Object) {
+    this.wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({ type, payload }));
+      }
+    });
+  }
 
   /**
    * Inicia el servidor WebSocket y configura los listeners de eventos.
