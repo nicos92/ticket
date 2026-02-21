@@ -1,6 +1,9 @@
 const lblPending = document.querySelector("#lbl-pending");
 const noHayMasTickets = document.querySelector("#no-hay-mas-tickets");
 const escritorio = document.querySelector("#escritorio");
+const btnDone = document.querySelector("#btn-done");
+const btnDraw = document.querySelector("#btn-draw");
+const lblTicketActual = document.querySelector("small");
 
 const params = new URLSearchParams(window.location.search);
 if (!params.has("escritorio")) {
@@ -10,12 +13,26 @@ if (!params.has("escritorio")) {
 
 const numeroEscritorio = params.get("escritorio");
 escritorio.innerHTML = numeroEscritorio;
-
+let ticketActual = null;
 async function loadInitialCount() {
   const pending = await fetch("/api/ticket/pending").then((resp) =>
     resp.json(),
   );
   chekearCantidadTickets(pending.length);
+}
+
+async function getTicket() {
+  const { status, ticket, message } = await fetch(
+    `/api/ticket/draw/${numeroEscritorio}`,
+  ).then((resp) => resp.json());
+
+  if (status === "error") {
+    lblTicketActual.innerHTML = message;
+    return;
+  }
+
+  ticketActual = ticket;
+  lblTicketActual.innerHTML = ticket.number;
 }
 
 function connectTowebSockets() {
@@ -49,5 +66,7 @@ function chekearCantidadTickets(cantidad = 0) {
   }
   lblPending.innerHTML = cantidad;
 }
+
+btnDraw.addEventListener("click", getTicket);
 loadInitialCount();
 connectTowebSockets();

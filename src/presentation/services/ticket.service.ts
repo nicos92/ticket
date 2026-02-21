@@ -44,7 +44,6 @@ export class TicketService {
     };
     this.tickets.push(newTicket);
 
-    // TODO: conectar con web socket
     this.onTicketNumberChanged();
     return newTicket;
   }
@@ -58,8 +57,7 @@ export class TicketService {
     ticket.handleAt = new Date();
 
     this.workingOnTickets.unshift({ ...ticket });
-    // TODO: conectar con web socket
-    //
+    this.onTicketNumberChanged();
     return { status: "ok", ticket };
   }
 
