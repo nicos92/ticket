@@ -22,6 +22,7 @@ async function loadInitialCount() {
 }
 
 async function getTicket() {
+  await finishTicket();
   const { status, ticket, message } = await fetch(
     `/api/ticket/draw/${numeroEscritorio}`,
   ).then((resp) => resp.json());
@@ -33,6 +34,18 @@ async function getTicket() {
 
   ticketActual = ticket;
   lblTicketActual.innerHTML = ticket.number;
+}
+
+async function finishTicket() {
+  if (!ticketActual) return;
+  const resp = await fetch(`/api/ticket/done/${ticketActual.id}`, {
+    method: "PUT",
+  }).then((resp) => resp.json());
+
+  if (resp.status === "ok") {
+    ticketActual = null;
+    lblTicketActual.innerHTML = "Nadie";
+  }
 }
 
 function connectTowebSockets() {
@@ -68,5 +81,6 @@ function chekearCantidadTickets(cantidad = 0) {
 }
 
 btnDraw.addEventListener("click", getTicket);
+btnDone.addEventListener("click", finishTicket);
 loadInitialCount();
 connectTowebSockets();
