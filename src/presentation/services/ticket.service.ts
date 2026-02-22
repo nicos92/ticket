@@ -27,7 +27,7 @@ export class TicketService {
     return this.tickets.filter((ticket) => !ticket.handleAtDesk);
   }
   public get lastWorkingOnTickets(): Ticket[] {
-    return this.workingOnTickets.splice(0, 4);
+    return this.workingOnTickets.slice(0, 4);
   }
   public get lastTicketNumber() {
     return this.tickets.at(-1)?.number ?? 0;
@@ -58,6 +58,7 @@ export class TicketService {
 
     this.workingOnTickets.unshift({ ...ticket });
     this.onTicketNumberChanged();
+    this.onWorkingOnChanged();
     return { status: "ok", ticket };
   }
 
@@ -74,6 +75,12 @@ export class TicketService {
     this.wssService.sendMessage(
       "on-ticket-count-changed",
       this.pendingTickets.length,
+    );
+  }
+  private onWorkingOnChanged() {
+    this.wssService.sendMessage(
+      "on-working-changed",
+      this.lastWorkingOnTickets,
     );
   }
 }
